@@ -6,21 +6,23 @@ import { CreateAnimeDto } from './dto/create-anime.dto';
 import { UpdateAnimeDto } from './dto/update-anime.dto';
 import { Tag } from 'src/tags/tags.entity';
 import { Studio } from 'src/studios/studios.entity';
+import { SearchAnimeDto } from './dto/search-anime.dto';
 
 @Injectable()
 export class AnimesService {
   constructor(@InjectRepository(Anime) private animeRepository: Repository<Anime>) {}
 
-  findAll(): Promise<Anime[]> {
-    return this.animeRepository.find();
+  findAll(searchQuery: SearchAnimeDto): Promise<Anime[]> {
+    const tag = new Tag();
+    tag.id = 4;
+    return this.animeRepository.find({ tags: [{ id: 4 }] });
   }
 
   findOne(id: string): Promise<Anime> {
     return this.animeRepository.findOneOrFail(id);
   }
 
-  create(createAnimeDto: CreateAnimeDto): Promise<Anime> {
-    const { studioId, tags, ...animeCreateField } = createAnimeDto;
+  create({ studioId, tags, ...animeCreateField }: CreateAnimeDto): Promise<Anime> {
     const anime = { ...new Anime(), ...animeCreateField };
 
     if (studioId) {
@@ -40,8 +42,7 @@ export class AnimesService {
     return this.animeRepository.save(anime);
   }
 
-  async update(id: string, updateAnimeDto: UpdateAnimeDto): Promise<Anime> {
-    const { studioId, addTags, removeTags, ...animeUpdateFields } = updateAnimeDto;
+  async update(id: string, { studioId, addTags, removeTags, ...animeUpdateFields }: UpdateAnimeDto): Promise<Anime> {
     const animeToUpdate = {
       ...(await this.animeRepository.findOneOrFail(id, { relations: ['tags', 'studio'] })),
       ...animeUpdateFields,
@@ -52,16 +53,6 @@ export class AnimesService {
       studio.id = Number(studioId);
       animeToUpdate.studio = studio;
     }
-
-    console.log(
-      addTags.filter(
-        newTag =>
-          animeToUpdate.tags.findIndex(el => {
-            console.log(Number(el.id), Number(newTag));
-            return Number(newTag) === Number(el.id);
-          }) === -1,
-      ),
-    );
 
     if (addTags) {
       animeToUpdate.tags.push(
@@ -79,7 +70,6 @@ export class AnimesService {
       animeToUpdate.tags = animeToUpdate.tags.filter(tag => removeTags.indexOf(String(tag.id)) === -1);
     }
 
-    console.log(animeToUpdate);
     return this.animeRepository.save(animeToUpdate);
   }
 

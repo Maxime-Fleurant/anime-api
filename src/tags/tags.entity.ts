@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Theme } from 'src/themes/themes.entity';
 
 @Entity()
@@ -19,6 +13,5 @@ export class Tag {
   description: string;
 
   @ManyToOne(() => Theme)
-  @JoinColumn()
   theme: Theme;
 }

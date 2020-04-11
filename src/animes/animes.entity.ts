@@ -49,7 +49,7 @@ export class Anime {
   @ManyToOne(() => Studio)
   studio: Studio;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { eager: true })
   @JoinTable()
   tags: Tag[];
 }

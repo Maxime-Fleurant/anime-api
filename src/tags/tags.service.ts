@@ -1,40 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './tags.entity';
-import { Repository, UpdateResult, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { Theme } from 'src/themes/themes.entity';
+import { SearchTagDto } from './dto/search-tags.dto';
 
 @Injectable()
 export class TagsService {
   constructor(@InjectRepository(Tag) private tagRepository: Repository<Tag>) {}
 
-  findAll(): Promise<Tag[]> {
-    return this.tagRepository.find();
+  findAll({ themeId, ...searchQuery }: SearchTagDto): Promise<Tag[]> {
+    return this.tagRepository.find({ ...searchQuery, theme: { id: Number(themeId) } });
   }
 
   findOne(id: string): Promise<Tag> {
     return this.tagRepository.findOneOrFail(id);
   }
 
-  create({ themeId, ...createTagDto }: CreateTagDto): Promise<Tag> {
-    const theme = new Theme();
-    theme.id = Number(themeId);
+  create({ themeId, ...createTagField }: CreateTagDto): Promise<Tag> {
+    const newTag = this.tagRepository.create({ ...createTagField, theme: { id: Number(themeId) } });
 
-    return this.tagRepository.save({
-      ...createTagDto,
-      theme: theme,
-    });
+    return this.tagRepository.save(newTag);
   }
 
-  update(id: string, { themeId, ...createTagDto }: CreateTagDto): Promise<UpdateResult> {
-    const theme = new Theme();
-    theme.id = Number(themeId);
+  async update(id: string, { themeId, ...createTagFields }: CreateTagDto): Promise<Tag> {
+    const tagToUpdate = {
+      ...(await this.tagRepository.findOneOrFail(id, { relations: ['theme'] })),
+      ...createTagFields,
+    };
 
-    return this.tagRepository.update(id, {
-      ...createTagDto,
-      theme: theme,
-    });
+    if (themeId) {
+      const theme = new Theme();
+      theme.id = Number(themeId);
+      tagToUpdate.theme = theme;
+    }
+
+    return this.tagRepository.save(tagToUpdate);
   }
 
   delete(id: string): Promise<DeleteResult> {

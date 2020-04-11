@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, UpdateResult, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { Studio } from './studios.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStudioDto } from './dto/create-studio.dto';
+import { SearchStudioDto } from './dto/search-studio.dto';
 
 @Injectable()
 export class StudiosService {
-  constructor(
-    @InjectRepository(Studio) private studioRepository: Repository<Studio>,
-  ) {}
+  constructor(@InjectRepository(Studio) private studioRepository: Repository<Studio>) {}
 
-  findAll(): Promise<Studio[]> {
-    return this.studioRepository.find();
+  findAll(searchQuery: SearchStudioDto): Promise<Studio[]> {
+    console.log(searchQuery);
+    return this.studioRepository
+      .createQueryBuilder('studio')
+      .where('studio.name = :name', searchQuery)
+      .getMany();
+    return this.studioRepository.find({ where: searchQuery });
   }
 
   findOne(id: string): Promise<Studio> {
@@ -19,11 +23,15 @@ export class StudiosService {
   }
 
   create(createStudioDto: CreateStudioDto): Promise<Studio> {
-    return this.studioRepository.save(createStudioDto);
+    const newStudio = this.studioRepository.create(createStudioDto);
+
+    return this.studioRepository.save(newStudio);
   }
 
-  update(id: string, createStudioDto: CreateStudioDto): Promise<UpdateResult> {
-    return this.studioRepository.update(id, createStudioDto);
+  async update(id: string, udpateStudioQuery: CreateStudioDto): Promise<Studio> {
+    const studioToUpdate = { ...(await this.studioRepository.findOneOrFail(id)), ...udpateStudioQuery };
+
+    return this.studioRepository.save(studioToUpdate);
   }
 
   delete(id: string): Promise<DeleteResult> {

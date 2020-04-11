@@ -1,17 +1,18 @@
-import { Controller, Get, Post, Delete, Put, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body, Query } from '@nestjs/common';
 import { AnimesService } from './animes.service';
 import { Anime } from './animes.entity';
 import { CreateAnimeDto } from './dto/create-anime.dto';
 import { DeleteResult } from 'typeorm';
 import { UpdateAnimeDto } from './dto/update-anime.dto';
+import { SearchAnimeDto } from './dto/search-anime.dto';
 
 @Controller('animes')
 export class AnimesController {
   constructor(private animeService: AnimesService) {}
 
   @Get()
-  findAll(): Promise<Anime[]> {
-    return this.animeService.findAll();
+  findAll(@Query() searchQuery: SearchAnimeDto): Promise<Anime[]> {
+    return this.animeService.findAll(searchQuery);
   }
 
   @Get(':id')

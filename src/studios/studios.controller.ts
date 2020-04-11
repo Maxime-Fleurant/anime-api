@@ -1,24 +1,16 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Param,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { StudiosService } from './studios.service';
 import { Studio } from './studios.entity';
 import { CreateStudioDto } from './dto/create-studio.dto';
-import { UpdateResult, DeleteResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 
 @Controller('studios')
 export class StudiosController {
   constructor(private studioService: StudiosService) {}
 
   @Get()
-  findAll(): Promise<Studio[]> {
-    return this.studioService.findAll();
+  findAll(@Query() searchQuery: CreateStudioDto): Promise<Studio[]> {
+    return this.studioService.findAll(searchQuery);
   }
 
   @Get(':id')
@@ -32,10 +24,7 @@ export class StudiosController {
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() createStudioDto: CreateStudioDto,
-  ): Promise<UpdateResult> {
+  update(@Param('id') id: string, @Body() createStudioDto: CreateStudioDto): Promise<Studio> {
     return this.studioService.update(id, createStudioDto);
   }
 
