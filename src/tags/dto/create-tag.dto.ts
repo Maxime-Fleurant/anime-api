@@ -1,5 +1,12 @@
+import { IsString, IsNumber } from 'class-validator';
+
 export class CreateTagDto {
+  @IsString()
   name: string;
+
+  @IsString()
   description: string;
-  themeId: string;
+
+  @IsNumber()
+  themeId: number;
 }

@@ -2,29 +2,33 @@ import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/
 import { TagsService } from './tags.service';
 import { Tag } from './tags.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
+import { SearchTagDto } from './dto/search-tags.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 
 @Controller('tags')
 export class TagsController {
   constructor(private tagsService: TagsService) {}
 
   @Get()
-  findAll(@Query() searchQuery: CreateTagDto): Promise<Tag[]> {
+  findAll(@Query() searchQuery: SearchTagDto): Promise<Tag[]> {
+    console.log(searchQuery);
     return this.tagsService.findAll(searchQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Tag> {
+  findOne(@Param('id') id: number): Promise<Tag> {
+    console.log(id);
     return this.tagsService.findOne(id);
   }
 
   @Post()
-  create(@Body() createTagDto: CreateTagDto): Promise<Tag> {
+  create(@Body() createTagDto: CreateTagDto): Promise<InsertResult> {
     return this.tagsService.create(createTagDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() createTagDto: CreateTagDto): Promise<Tag> {
+  update(@Param('id') id: string, @Body() createTagDto: UpdateTagDto): Promise<UpdateResult> {
     return this.tagsService.update(id, createTagDto);
   }
 

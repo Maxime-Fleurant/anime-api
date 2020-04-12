@@ -1,45 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './tags.entity';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { Theme } from 'src/themes/themes.entity';
 import { SearchTagDto } from './dto/search-tags.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 
 @Injectable()
 export class TagsService {
   constructor(@InjectRepository(Tag) private tagRepository: Repository<Tag>) {}
 
-  findAll({ themeId, ...searchQuery }: SearchTagDto): Promise<Tag[]> {
-    return this.tagRepository.find({ ...searchQuery, theme: { id: Number(themeId) } });
+  findAll({ themeId, name }: SearchTagDto): Promise<Tag[]> {
+    const searchQuery = this.tagRepository.createQueryBuilder('tag');
+
+    if (name) searchQuery.where(`tag.name = :name`, { name: name });
+    if (themeId) searchQuery.andWhere(`tag.theme = :themeId`, { themeId: themeId });
+
+    return searchQuery.getMany();
   }
 
-  findOne(id: string): Promise<Tag> {
-    return this.tagRepository.findOneOrFail(id);
+  findOne(id: number): Promise<Tag> {
+    return this.tagRepository
+      .createQueryBuilder('studio')
+      .where(`id = :id`, { id: id })
+      .getOne();
   }
 
-  create({ themeId, ...createTagField }: CreateTagDto): Promise<Tag> {
-    const newTag = this.tagRepository.create({ ...createTagField, theme: { id: Number(themeId) } });
-
-    return this.tagRepository.save(newTag);
+  create({ themeId, name, description }: CreateTagDto): Promise<InsertResult> {
+    return this.tagRepository
+      .createQueryBuilder()
+      .insert()
+      .values({ name: name, description: description, theme: { id: themeId } })
+      .execute();
   }
 
-  async update(id: string, { themeId, ...createTagFields }: CreateTagDto): Promise<Tag> {
-    const tagToUpdate = {
-      ...(await this.tagRepository.findOneOrFail(id, { relations: ['theme'] })),
-      ...createTagFields,
-    };
+  update(id: string, updateTagDto: UpdateTagDto): Promise<UpdateResult> {
+    const updateQuery = this.tagRepository
+      .createQueryBuilder()
+      .update()
+      .set(updateTagDto)
+      .where(`id = :id`, { id: id });
 
-    if (themeId) {
-      const theme = new Theme();
-      theme.id = Number(themeId);
-      tagToUpdate.theme = theme;
-    }
-
-    return this.tagRepository.save(tagToUpdate);
+    return updateQuery.execute();
   }
 
   delete(id: string): Promise<DeleteResult> {
-    return this.tagRepository.delete(id);
+    return this.tagRepository
+      .createQueryBuilder('studio')
+      .delete()
+      .where(`id = :id`, { id: id })
+      .execute();
   }
 }
