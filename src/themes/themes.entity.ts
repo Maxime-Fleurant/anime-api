@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Tag } from 'src/tags/tags.entity';
 
 @Entity()
 export class Theme {
@@ -7,4 +8,10 @@ export class Theme {
 
   @Column({ type: 'varchar', unique: true })
   name: string;
+
+  @OneToMany(
+    () => Tag,
+    anime => anime.theme,
+  )
+  tags: Tag[];
 }

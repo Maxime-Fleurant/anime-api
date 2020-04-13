@@ -12,14 +12,36 @@ import { SearchAnimeDto } from './dto/search-anime.dto';
 export class AnimesService {
   constructor(@InjectRepository(Anime) private animeRepository: Repository<Anime>) {}
 
-  findAll(searchQuery: SearchAnimeDto): Promise<Anime[]> {
-    const tag = new Tag();
-    tag.id = 4;
-    return this.animeRepository.find({ tags: [{ id: 4 }] });
+  findAll(searchAnimeDto: SearchAnimeDto): Promise<Anime[]> {
+    const { romajiTitle, englishTitle, nativeTitle, avgScore, popularity, studioId, tags } = searchAnimeDto;
+
+    const searchQuery = this.animeRepository.createQueryBuilder('anime').leftJoinAndSelect('anime.tags', 'tags');
+    console.log(searchQuery.getSql());
+    if (romajiTitle) searchQuery.where(`anime.romajiTitle = :romajiTitle`, { romajiTitle: romajiTitle });
+    if (englishTitle) searchQuery.andWhere(`anime.englishTitle = :englishTitle`, { englishTitle: englishTitle });
+    if (nativeTitle) searchQuery.andWhere(`anime.nativeTitle = :nativeTitle`, { nativeTitle: nativeTitle });
+    if (avgScore) searchQuery.andWhere(`anime.avgScore >= :avgScore`, { avgScore: avgScore });
+    if (popularity) searchQuery.andWhere(`anime.popularity >= :popularity`, { popularity: popularity });
+    if (studioId) searchQuery.andWhere(`anime.studioId = :studioId`, { studioId: studioId });
+    if (tags) {
+      searchQuery.innerJoin('anime.tags', 'tags').andWhere(`tags.id IN (:...tags)`, { tags: tags });
+    }
+    console.log(searchQuery.getSql());
+    return searchQuery.getMany();
   }
 
   findOne(id: string): Promise<Anime> {
-    return this.animeRepository.findOneOrFail(id);
+    console.log(
+      this.animeRepository
+        .createQueryBuilder()
+        .where(`id = :id`, { id: id })
+        .getSql(),
+    );
+    return this.animeRepository
+      .createQueryBuilder('anime')
+      .innerJoinAndSelect('anime.tags', 'tags')
+      .where(`anime.id = :id`, { id: id })
+      .getOne();
   }
 
   create({ studioId, tags, ...animeCreateField }: CreateAnimeDto): Promise<Anime> {

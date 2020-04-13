@@ -11,8 +11,9 @@ export class AnimesController {
   constructor(private animeService: AnimesService) {}
 
   @Get()
-  findAll(@Query() searchQuery: SearchAnimeDto): Promise<Anime[]> {
-    return this.animeService.findAll(searchQuery);
+  findAll(@Query() searchAnimeDto: SearchAnimeDto): Promise<Anime[]> {
+    console.log(searchAnimeDto);
+    return this.animeService.findAll(searchAnimeDto);
   }
 
   @Get(':id')
@@ -22,6 +23,7 @@ export class AnimesController {
 
   @Post()
   create(@Body() createAnimeDto: CreateAnimeDto): Promise<Anime> {
+    console.log(createAnimeDto);
     return this.animeService.create(createAnimeDto);
   }
 

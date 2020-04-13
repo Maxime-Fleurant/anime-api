@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Anime } from 'src/animes/animes.entity';
 
 @Entity()
 export class Studio {
@@ -7,4 +8,10 @@ export class Studio {
 
   @Column({ type: 'varchar', unique: true })
   name: string;
+
+  @OneToMany(
+    () => Anime,
+    anime => anime.studio,
+  )
+  animes: Anime[];
 }

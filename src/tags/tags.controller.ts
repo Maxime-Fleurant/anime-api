@@ -12,13 +12,11 @@ export class TagsController {
 
   @Get()
   findAll(@Query() searchQuery: SearchTagDto): Promise<Tag[]> {
-    console.log(searchQuery);
     return this.tagsService.findAll(searchQuery);
   }
 
   @Get(':id')
   findOne(@Param('id') id: number): Promise<Tag> {
-    console.log(id);
     return this.tagsService.findOne(id);
   }
 

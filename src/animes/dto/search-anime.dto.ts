@@ -1,17 +1,31 @@
+import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
+
 export class SearchAnimeDto {
+  @IsString()
+  @IsOptional()
   romajiTitle: string;
+
+  @IsString()
+  @IsOptional()
   englishTitle: string;
+
+  @IsString()
+  @IsOptional()
   nativeTitle: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  nbEpisodes: number;
-  trailer: string;
-  xLargeCover: string;
-  largeCover: string;
-  mediumCover: string;
+
+  @IsNumber()
+  @IsOptional()
   avgScore: number;
+
+  @IsNumber()
+  @IsOptional()
   popularity: number;
-  studioId: string;
+
+  @IsNumber()
+  @IsOptional()
+  studioId: number;
+
+  @IsString({ each: true })
+  @IsOptional()
   tags: string[];
 }

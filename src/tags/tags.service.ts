@@ -10,7 +10,8 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 export class TagsService {
   constructor(@InjectRepository(Tag) private tagRepository: Repository<Tag>) {}
 
-  findAll({ themeId, name }: SearchTagDto): Promise<Tag[]> {
+  findAll(searchTagDto: SearchTagDto): Promise<Tag[]> {
+    const { themeId, name } = searchTagDto;
     const searchQuery = this.tagRepository.createQueryBuilder('tag');
 
     if (name) searchQuery.where(`tag.name = :name`, { name: name });
@@ -21,16 +22,16 @@ export class TagsService {
 
   findOne(id: number): Promise<Tag> {
     return this.tagRepository
-      .createQueryBuilder('studio')
+      .createQueryBuilder()
       .where(`id = :id`, { id: id })
       .getOne();
   }
 
-  create({ themeId, name, description }: CreateTagDto): Promise<InsertResult> {
+  create(createTagDto: CreateTagDto): Promise<InsertResult> {
     return this.tagRepository
       .createQueryBuilder()
       .insert()
-      .values({ name: name, description: description, theme: { id: themeId } })
+      .values(createTagDto)
       .execute();
   }
 
@@ -46,7 +47,7 @@ export class TagsService {
 
   delete(id: string): Promise<DeleteResult> {
     return this.tagRepository
-      .createQueryBuilder('studio')
+      .createQueryBuilder()
       .delete()
       .where(`id = :id`, { id: id })
       .execute();

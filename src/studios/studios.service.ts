@@ -19,7 +19,7 @@ export class StudiosService {
 
   findOne(id: number): Promise<Studio> {
     return this.studioRepository
-      .createQueryBuilder('studio')
+      .createQueryBuilder()
       .where(`id = :id`, { id: id })
       .getOne();
   }
@@ -43,7 +43,7 @@ export class StudiosService {
 
   delete(id: number): Promise<DeleteResult> {
     return this.studioRepository
-      .createQueryBuilder('studio')
+      .createQueryBuilder()
       .delete()
       .where(`id = :id`, { id: id })
       .execute();

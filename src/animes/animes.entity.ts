@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, JoinColumn } from 'typeorm';
 import { Studio } from 'src/studios/studios.entity';
 import { Tag } from 'src/tags/tags.entity';
 
@@ -46,10 +46,20 @@ export class Anime {
   @Column({ type: 'int' })
   popularity: number;
 
-  @ManyToOne(() => Studio)
+  @Column({ type: 'bigint' })
+  studioId: number;
+
+  @ManyToOne(
+    () => Studio,
+    studio => studio.animes,
+  )
+  @JoinColumn({ name: 'studioId' })
   studio: Studio;
 
-  @ManyToMany(() => Tag, { eager: true })
+  @ManyToMany(
+    () => Tag,
+    tag => tag.animes,
+  )
   @JoinTable()
   tags: Tag[];
 }

@@ -1,17 +1,48 @@
+import { IsString, IsNumber, IsDate, IsArray } from 'class-validator';
+
 export class CreateAnimeDto {
+  @IsString()
   romajiTitle: string;
+
+  @IsString()
   englishTitle: string;
+
+  @IsString()
   nativeTitle: string;
+
+  @IsString()
   description: string;
-  startDate: string;
-  endDate: string;
+
+  @IsDate()
+  startDate: Date;
+
+  @IsDate()
+  endDate: Date;
+
+  @IsNumber()
   nbEpisodes: number;
+
+  @IsString()
   trailer: string;
+
+  @IsString()
   xLargeCover: string;
+
+  @IsString()
   largeCover: string;
+
+  @IsString()
   mediumCover: string;
+
+  @IsNumber()
   avgScore: number;
+
+  @IsNumber()
   popularity: number;
-  studioId: string;
-  tags: string[];
+
+  @IsNumber()
+  studioId: number;
+
+  @IsArray()
+  tags: number[];
 }
