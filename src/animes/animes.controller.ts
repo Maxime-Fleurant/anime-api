@@ -2,7 +2,7 @@ import { Controller, Get, Post, Delete, Put, Param, Body, Query } from '@nestjs/
 import { AnimesService } from './animes.service';
 import { Anime } from './animes.entity';
 import { CreateAnimeDto } from './dto/create-anime.dto';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { UpdateAnimeDto } from './dto/update-anime.dto';
 import { SearchAnimeDto } from './dto/search-anime.dto';
 
@@ -12,7 +12,6 @@ export class AnimesController {
 
   @Get()
   findAll(@Query() searchAnimeDto: SearchAnimeDto): Promise<Anime[]> {
-    console.log(searchAnimeDto);
     return this.animeService.findAll(searchAnimeDto);
   }
 
@@ -22,13 +21,13 @@ export class AnimesController {
   }
 
   @Post()
-  create(@Body() createAnimeDto: CreateAnimeDto): Promise<Anime> {
-    console.log(createAnimeDto);
+  create(@Body() createAnimeDto: CreateAnimeDto): Promise<InsertResult> {
     return this.animeService.create(createAnimeDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAnimeDto: UpdateAnimeDto): Promise<Anime> {
+  update(@Param('id') id: string, @Body() updateAnimeDto: UpdateAnimeDto): Promise<UpdateResult> {
+    console.log(updateAnimeDto);
     return this.animeService.update(id, updateAnimeDto);
   }
 

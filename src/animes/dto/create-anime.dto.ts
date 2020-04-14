@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsArray, IsOptional } from 'class-validator';
 
 export class CreateAnimeDto {
   @IsString()
@@ -26,12 +26,15 @@ export class CreateAnimeDto {
   trailer: string;
 
   @IsString()
+  @IsOptional()
   xLargeCover: string;
 
   @IsString()
+  @IsOptional()
   largeCover: string;
 
   @IsString()
+  @IsOptional()
   mediumCover: string;
 
   @IsNumber()
@@ -43,6 +46,6 @@ export class CreateAnimeDto {
   @IsNumber()
   studioId: number;
 
-  @IsArray()
-  tags: number[];
+  @IsString({ each: true })
+  tags: string[];
 }

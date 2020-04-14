@@ -31,13 +31,13 @@ export class Anime {
   @Column({ type: 'varchar' })
   trailer: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   xLargeCover: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   largeCover: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   mediumCover: string;
 
   @Column({ type: 'smallint' })
@@ -46,7 +46,7 @@ export class Anime {
   @Column({ type: 'int' })
   popularity: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   studioId: number;
 
   @ManyToOne(
