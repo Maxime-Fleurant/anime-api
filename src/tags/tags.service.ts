@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './tags.entity';
-import { Repository, DeleteResult, InsertResult, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { SearchTagDto } from './dto/search-tags.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -27,29 +27,34 @@ export class TagsService {
       .getOne();
   }
 
-  create(createTagDto: CreateTagDto): Promise<InsertResult> {
-    return this.tagRepository
+  async create(createTagDto: CreateTagDto): Promise<object> {
+    const createQuery = await this.tagRepository
       .createQueryBuilder()
       .insert()
       .values(createTagDto)
       .execute();
+
+    return { id: createQuery.identifiers[0].id };
   }
 
-  update(id: string, updateTagDto: UpdateTagDto): Promise<UpdateResult> {
-    const updateQuery = this.tagRepository
+  async update(id: string, updateTagDto: UpdateTagDto): Promise<object> {
+    await this.tagRepository
       .createQueryBuilder()
       .update()
       .set(updateTagDto)
-      .where(`id = :id`, { id: id });
+      .where(`id = :id`, { id: id })
+      .execute();
 
-    return updateQuery.execute();
+    return { id: id };
   }
 
-  delete(id: string): Promise<DeleteResult> {
-    return this.tagRepository
+  async delete(id: string): Promise<string> {
+    await this.tagRepository
       .createQueryBuilder()
       .delete()
       .where(`id = :id`, { id: id })
       .execute();
+
+    return 'deleted';
   }
 }

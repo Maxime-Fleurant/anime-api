@@ -64,4 +64,12 @@ export class UpdateAnimeDto {
   @IsString({ each: true })
   @IsOptional()
   removeTags: string[];
+
+  @IsString({ each: true })
+  @IsOptional()
+  addGenres: string[];
+
+  @IsString({ each: true })
+  @IsOptional()
+  removeGenres: string[];
 }

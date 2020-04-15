@@ -11,6 +11,9 @@ import { Genre } from './genres/genres.entity';
 import { ExternalLinksModule } from './external-links/external-links.module';
 import { TagsModule } from './tags/tags.module';
 import { Anime } from './animes/animes.entity';
+import { Review } from './reviews/reviews.entity';
+import { Character } from './characters/character.entity';
+import { ExternalLink } from './external-links/external-links.entity';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { Anime } from './animes/animes.entity';
       username: 'anidb',
       password: 'test123',
       database: 'anidb',
-      entities: [Studio, Theme, Genre, Tag, Anime],
+      entities: [Studio, Theme, Genre, Tag, Anime, Review, Character, ExternalLink],
       synchronize: true,
     }),
     AnimesModule,

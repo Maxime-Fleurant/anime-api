@@ -48,4 +48,7 @@ export class CreateAnimeDto {
 
   @IsString({ each: true })
   tags: string[];
+
+  @IsString({ each: true })
+  genres: string[];
 }

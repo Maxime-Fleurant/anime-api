@@ -3,7 +3,6 @@ import { StudiosService } from './studios.service';
 import { Studio } from './studios.entity';
 import { CreateStudioDto } from './dto/create-studio.dto';
 import { SearchStudioDto } from './dto/search-studio.dto';
-import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 
 @Controller('studios')
 export class StudiosController {
@@ -20,17 +19,17 @@ export class StudiosController {
   }
 
   @Post()
-  create(@Body() createStudioDto: CreateStudioDto): Promise<InsertResult> {
+  create(@Body() createStudioDto: CreateStudioDto): Promise<object> {
     return this.studioService.create(createStudioDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() createStudioDto: CreateStudioDto): Promise<UpdateResult> {
+  update(@Param('id') id: number, @Body() createStudioDto: CreateStudioDto): Promise<object> {
     return this.studioService.update(id, createStudioDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<DeleteResult> {
+  delete(@Param('id') id: number): Promise<string> {
     return this.studioService.delete(id);
   }
 }

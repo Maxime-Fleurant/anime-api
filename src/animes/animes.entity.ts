@@ -1,6 +1,19 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
 import { Studio } from 'src/studios/studios.entity';
 import { Tag } from 'src/tags/tags.entity';
+import { Genre } from 'src/genres/genres.entity';
+import { Review } from 'src/reviews/reviews.entity';
+import { Character } from 'src/characters/character.entity';
+import { ExternalLink } from 'src/external-links/external-links.entity';
 
 @Entity()
 export class Anime {
@@ -62,4 +75,29 @@ export class Anime {
   )
   @JoinTable()
   tags: Tag[];
+
+  @ManyToMany(
+    () => Genre,
+    genre => genre.animes,
+  )
+  @JoinTable()
+  genres: Tag[];
+
+  @OneToMany(
+    () => Review,
+    review => review.anime,
+  )
+  reviews: Review[];
+
+  @OneToMany(
+    () => Character,
+    character => character.anime,
+  )
+  characters: Character[];
+
+  @OneToMany(
+    () => ExternalLink,
+    externalLink => externalLink.animes,
+  )
+  externalLinks: ExternalLink[];
 }

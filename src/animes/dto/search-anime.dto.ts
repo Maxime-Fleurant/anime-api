@@ -28,4 +28,8 @@ export class SearchAnimeDto {
   @IsString({ each: true })
   @IsOptional()
   tags: string[];
+
+  @IsString({ each: true })
+  @IsOptional()
+  genres: string[];
 }

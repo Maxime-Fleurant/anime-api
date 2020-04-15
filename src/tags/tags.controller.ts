@@ -2,7 +2,6 @@ import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/
 import { TagsService } from './tags.service';
 import { Tag } from './tags.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { SearchTagDto } from './dto/search-tags.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 
@@ -21,17 +20,17 @@ export class TagsController {
   }
 
   @Post()
-  create(@Body() createTagDto: CreateTagDto): Promise<InsertResult> {
+  create(@Body() createTagDto: CreateTagDto): Promise<object> {
     return this.tagsService.create(createTagDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() createTagDto: UpdateTagDto): Promise<UpdateResult> {
+  update(@Param('id') id: string, @Body() createTagDto: UpdateTagDto): Promise<object> {
     return this.tagsService.update(id, createTagDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<DeleteResult> {
+  delete(@Param('id') id: string): Promise<string> {
     return this.tagsService.delete(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository, DeleteResult, InsertResult, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Studio } from './studios.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStudioDto } from './dto/create-studio.dto';
@@ -24,28 +24,34 @@ export class StudiosService {
       .getOne();
   }
 
-  create(createStudioDto: CreateStudioDto): Promise<InsertResult> {
-    return this.studioRepository
+  async create(createStudioDto: CreateStudioDto): Promise<object> {
+    const createQuery = await this.studioRepository
       .createQueryBuilder()
       .insert()
       .values(createStudioDto)
       .execute();
+
+    return { id: createQuery.identifiers[0].id };
   }
 
-  update(id: number, createStudioDto: CreateStudioDto): Promise<UpdateResult> {
-    return this.studioRepository
+  async update(id: number, createStudioDto: CreateStudioDto): Promise<object> {
+    await this.studioRepository
       .createQueryBuilder()
       .update()
       .set(createStudioDto)
       .where(`id = :id`, { id: id })
       .execute();
+
+    return { id: id };
   }
 
-  delete(id: number): Promise<DeleteResult> {
-    return this.studioRepository
+  async delete(id: number): Promise<string> {
+    await this.studioRepository
       .createQueryBuilder()
       .delete()
       .where(`id = :id`, { id: id })
       .execute();
+
+    return 'deleted';
   }
 }

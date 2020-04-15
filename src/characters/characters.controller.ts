@@ -1,32 +1,36 @@
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Query, Param, Body } from '@nestjs/common';
 import { CharactersService } from './characters.service';
+import { Character } from './character.entity';
+import { SearchCharacterDto } from './dto/search-character.dto';
+import { CreateCharacterDto } from './dto/create-character.dto';
+import { UpdateCharacterDto } from './dto/update-character.dto';
 
 @Controller('characters')
 export class CharactersController {
   constructor(private characterService: CharactersService) {}
 
   @Get()
-  findAll() {
-    return this.characterService.findAll();
+  findAll(@Query() searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+    return this.characterService.findAll(searchCharacterDto);
   }
 
   @Get(':id')
-  findOne() {
-    return this.characterService.findOne();
+  findOne(@Param('id') id: string): Promise<Character> {
+    return this.characterService.findOne(id);
   }
 
   @Post()
-  create() {
-    return this.characterService.create();
+  create(@Body() createCharacterDto: CreateCharacterDto): Promise<object> {
+    return this.characterService.create(createCharacterDto);
   }
 
-  @Put()
-  update() {
-    return this.characterService.update();
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateCharacterDto: UpdateCharacterDto): Promise<object> {
+    return this.characterService.update(id, updateCharacterDto);
   }
 
-  @Delete()
-  delete() {
-    return this.characterService.delete();
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<string> {
+    return this.characterService.delete(id);
   }
 }

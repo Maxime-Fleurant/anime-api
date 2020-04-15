@@ -21,18 +21,17 @@ export class AnimesController {
   }
 
   @Post()
-  create(@Body() createAnimeDto: CreateAnimeDto): Promise<InsertResult> {
+  create(@Body() createAnimeDto: CreateAnimeDto): Promise<object> {
     return this.animeService.create(createAnimeDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAnimeDto: UpdateAnimeDto): Promise<UpdateResult> {
-    console.log(updateAnimeDto);
+  update(@Param('id') id: string, @Body() updateAnimeDto: UpdateAnimeDto): Promise<object> {
     return this.animeService.update(id, updateAnimeDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<DeleteResult> {
+  delete(@Param('id') id: string): Promise<string> {
     return this.animeService.delete(id);
   }
 }
