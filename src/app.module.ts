@@ -14,6 +14,7 @@ import { Anime } from './animes/animes.entity';
 import { Review } from './reviews/reviews.entity';
 import { Character } from './characters/character.entity';
 import { ExternalLink } from './external-links/external-links.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ExternalLink } from './external-links/external-links.entity';
     CharactersModule,
     ExternalLinksModule,
     TagsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

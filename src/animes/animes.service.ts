@@ -23,7 +23,9 @@ export class AnimesService {
     if (studioId) searchQuery.andWhere(`anime.studioId = :studioId`, { studioId: studioId });
     if (tags) searchQuery.innerJoinAndSelect('anime.tags', 'tags').andWhere(`tags.id IN (:...tags)`, { tags: tags });
     if (genres)
-      searchQuery.innerJoinAndSelect('anime.genres', 'genres').andWhere(`genres.id IN (:...genres)`, { tags: genres });
+      searchQuery
+        .innerJoinAndSelect('anime.genres', 'genres')
+        .andWhere(`genres.id IN (:...genres)`, { genres: genres });
 
     return searchQuery.getMany();
   }

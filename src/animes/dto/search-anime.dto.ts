@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class SearchAnimeDto {
   @IsString()
@@ -29,7 +29,7 @@ export class SearchAnimeDto {
   @IsOptional()
   tags: string[];
 
-  @IsString({ each: true })
+  @IsArray()
   @IsOptional()
   genres: string[];
 }

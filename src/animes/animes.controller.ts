@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Delete, Put, Param, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body, Query, UseGuards, Req } from '@nestjs/common';
 import { AnimesService } from './animes.service';
 import { Anime } from './animes.entity';
 import { CreateAnimeDto } from './dto/create-anime.dto';
-import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { UpdateAnimeDto } from './dto/update-anime.dto';
 import { SearchAnimeDto } from './dto/search-anime.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { TestGuard } from 'src/auth/auth.guard';
 
 @Controller('animes')
 export class AnimesController {
   constructor(private animeService: AnimesService) {}
 
+  @UseGuards(AuthGuard('jwt'), TestGuard)
   @Get()
   findAll(@Query() searchAnimeDto: SearchAnimeDto): Promise<Anime[]> {
     return this.animeService.findAll(searchAnimeDto);
