@@ -15,6 +15,9 @@ import { Review } from './reviews/reviews.entity';
 import { Character } from './characters/character.entity';
 import { ExternalLink } from './external-links/external-links.entity';
 import { AuthModule } from './auth/auth.module';
+import { User } from './users/users.entity';
+import { UsersModule } from './users/users.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -25,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
       username: 'anidb',
       password: 'test123',
       database: 'anidb',
-      entities: [Studio, Theme, Genre, Tag, Anime, Review, Character, ExternalLink],
+      entities: [Studio, Theme, Genre, Tag, Anime, Review, Character, ExternalLink, User],
       synchronize: true,
     }),
     AnimesModule,
@@ -35,6 +38,8 @@ import { AuthModule } from './auth/auth.module';
     ExternalLinksModule,
     TagsModule,
     AuthModule,
+    UsersModule,
+    SharedModule,
   ],
   controllers: [],
   providers: [],
