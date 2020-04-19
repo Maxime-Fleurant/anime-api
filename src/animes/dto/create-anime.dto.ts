@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate, IsArray, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsOptional } from 'class-validator';
 
 export class CreateAnimeDto {
   @IsString()
@@ -27,15 +27,15 @@ export class CreateAnimeDto {
 
   @IsString()
   @IsOptional()
-  xLargeCover: string;
+  xLargeCover?: string;
 
   @IsString()
   @IsOptional()
-  largeCover: string;
+  largeCover?: string;
 
   @IsString()
   @IsOptional()
-  mediumCover: string;
+  mediumCover?: string;
 
   @IsNumber()
   avgScore: number;
@@ -47,8 +47,8 @@ export class CreateAnimeDto {
   studioId: number;
 
   @IsString({ each: true })
-  tags: string[];
+  tags?: string[];
 
   @IsString({ each: true })
-  genres: string[];
+  genres?: string[];
 }

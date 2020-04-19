@@ -10,13 +10,13 @@ export class CharactersController {
   constructor(private characterService: CharactersService) {}
 
   @Get()
-  findAll(@Query() searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
-    return this.characterService.findAll(searchCharacterDto);
+  getCharacter(@Query() searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+    return this.characterService.getCharacter(searchCharacterDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Character> {
-    return this.characterService.findOne(id);
+  getCharacters(@Param('id') id: number): Promise<Character[]> {
+    return this.characterService.getCharacters(id);
   }
 
   @Post()

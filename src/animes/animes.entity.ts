@@ -72,6 +72,7 @@ export class Anime {
   @ManyToMany(
     () => Tag,
     tag => tag.animes,
+    { nullable: true },
   )
   @JoinTable()
   tags: Tag[];

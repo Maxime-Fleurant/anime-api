@@ -1,35 +1,39 @@
 import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class SearchAnimeDto {
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  romajiTitle: string;
-
-  @IsString()
-  @IsOptional()
-  englishTitle: string;
+  id?: number;
 
   @IsString()
   @IsOptional()
-  nativeTitle: string;
+  romajiTitle?: string;
+
+  @IsString()
+  @IsOptional()
+  englishTitle?: string;
+
+  @IsString()
+  @IsOptional()
+  nativeTitle?: string;
 
   @IsNumber()
   @IsOptional()
-  avgScore: number;
+  avgScore?: number;
 
   @IsNumber()
   @IsOptional()
-  popularity: number;
+  popularity?: number;
 
   @IsNumber()
   @IsOptional()
-  studioId: number;
+  studioId?: number;
 
   @IsString({ each: true })
   @IsOptional()
-  tags: string[];
+  tags?: string[];
 
   @IsArray()
   @IsOptional()
-  genres: string[];
+  genres?: string[];
 }

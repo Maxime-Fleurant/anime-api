@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Put, Delete, Query, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +22,8 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<object> {
+  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto, @Req() req: Request): Promise<object> {
+    console.log(req.user);
     return this.userService.update(id, updateUserDto);
   }
 

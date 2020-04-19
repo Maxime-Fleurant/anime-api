@@ -5,26 +5,21 @@ import { Repository } from 'typeorm';
 import { SearchCharacterDto } from './dto/search-character.dto';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
+import { SearchCharacters } from './providers/search-characters';
 
 @Injectable()
 export class CharactersService {
-  constructor(@InjectRepository(Character) private characterRepository: Repository<Character>) {}
+  constructor(
+    @InjectRepository(Character) private characterRepository: Repository<Character>,
+    private searchCharacter: SearchCharacters,
+  ) {}
 
-  findAll(searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
-    const { animeId } = searchCharacterDto;
-    const searchQuery = this.characterRepository.createQueryBuilder('character');
-
-    if (animeId) searchQuery.where(`character.animeId = :animeId`, { animeId: animeId });
-
-    return searchQuery.getMany();
+  getCharacter(searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+    return this.searchCharacter.find(searchCharacterDto);
   }
 
-  findOne(id: string): Promise<Character> {
-    return this.characterRepository
-      .createQueryBuilder('character')
-      .leftJoinAndSelect('character.anime', 'animes')
-      .where('character.id = :id', { id: id })
-      .getOne();
+  getCharacters(id: number): Promise<Character[]> {
+    return this.searchCharacter.find({ id });
   }
 
   async create(createCharacterDto: CreateCharacterDto): Promise<object> {
