@@ -10,27 +10,27 @@ export class ExternalLinksController {
   constructor(private externalLinkService: ExternalLinksService) {}
 
   @Get()
-  findAll(@Query() searchExternalLinkDto: SearchExternalLinkDto): Promise<ExternalLink[]> {
-    return this.externalLinkService.findAll(searchExternalLinkDto);
+  getExternalLinks(@Query() searchExternalLinkDto: SearchExternalLinkDto): Promise<ExternalLink[]> {
+    return this.externalLinkService.getExternalLinksOrchestration(searchExternalLinkDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ExternalLink> {
-    return this.externalLinkService.findOne(id);
+  getExternalLink(@Param('id') id: number): Promise<ExternalLink[]> {
+    return this.externalLinkService.getExternalLinkOrchestration(id);
   }
 
   @Post()
-  create(@Body() createExternalLinkDto: CreateExternalLinkDto): Promise<object> {
-    return this.externalLinkService.create(createExternalLinkDto);
+  postExternalLink(@Body() createExternalLinkDto: CreateExternalLinkDto): Promise<object> {
+    return this.externalLinkService.postExternalLinkOrchestration(createExternalLinkDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateExternalLinkDto: UpdateExternalLinkDto): Promise<object> {
-    return this.externalLinkService.update(id, updateExternalLinkDto);
+  putExternalLink(@Param('id') id: number, @Body() updateExternalLinkDto: UpdateExternalLinkDto): Promise<object> {
+    return this.externalLinkService.putExternalLinkOrchestration(id, updateExternalLinkDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<string> {
-    return this.externalLinkService.delete(id);
+  deleteExternalLink(@Param('id') id: string): Promise<string> {
+    return this.externalLinkService.deleteExternalLinkOrchestration(id);
   }
 }

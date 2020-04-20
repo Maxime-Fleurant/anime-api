@@ -10,13 +10,13 @@ export class CharactersController {
   constructor(private characterService: CharactersService) {}
 
   @Get()
-  getCharacter(@Query() searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
-    return this.characterService.getCharacter(searchCharacterDto);
+  getCharacters(@Query() searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+    return this.characterService.getCharacters(searchCharacterDto);
   }
 
   @Get(':id')
-  getCharacters(@Param('id') id: number): Promise<Character[]> {
-    return this.characterService.getCharacters(id);
+  getCharacter(@Param('id') id: number): Promise<Character[]> {
+    return this.characterService.getCharacter(id);
   }
 
   @Post()
@@ -25,7 +25,7 @@ export class CharactersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateCharacterDto: UpdateCharacterDto): Promise<object> {
+  update(@Param('id') id: number, @Body() updateCharacterDto: UpdateCharacterDto): Promise<object> {
     return this.characterService.update(id, updateCharacterDto);
   }
 

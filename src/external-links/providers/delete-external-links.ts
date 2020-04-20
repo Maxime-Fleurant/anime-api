@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Character } from '../character.entity';
+import { ExternalLink } from '../external-links.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class DeleteCharacters {
-  constructor(@InjectRepository(Character) private characterRepository: Repository<Character>) {}
+export class DeleteExternalLinks {
+  constructor(@InjectRepository(ExternalLink) private externalLinkRepository: Repository<ExternalLink>) {}
 
   delete = async (id: string): Promise<string> => {
-    await this.characterRepository
+    await this.externalLinkRepository
       .createQueryBuilder()
       .delete()
       .where(`id = :id`, { id: id })

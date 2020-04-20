@@ -8,7 +8,7 @@ import { SearchCharacterDto } from '../dto/search-character.dto';
 export class SearchCharacters {
   constructor(@InjectRepository(Character) private characterRepository: Repository<Character>) {}
 
-  public find(searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+  public find = async (searchCharacterDto: SearchCharacterDto): Promise<Character[]> => {
     const { animeId, id } = searchCharacterDto;
     const searchQuery = this.characterRepository.createQueryBuilder('character');
 
@@ -16,5 +16,5 @@ export class SearchCharacters {
     if (id) searchQuery.andWhere('character.id = :id', { id: id });
 
     return searchQuery.getMany();
-  }
+  };
 }

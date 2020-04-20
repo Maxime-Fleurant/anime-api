@@ -5,56 +5,38 @@ import { ExternalLink } from './external-links.entity';
 import { SearchExternalLinkDto } from './dto/search-external-link.dto';
 import { CreateExternalLinkDto } from './dto/create-external-link.dto';
 import { UpdateExternalLinkDto } from './dto/update-external-link.dto';
+import { SearchExternalLinks } from './providers/search-external-links';
+import { CreateExternalLinks } from './providers/create-external-links';
+import { UpdateExternalLinks } from './providers/update-external-links';
+import { DeleteExternalLinks } from './providers/delete-external-links';
 
 @Injectable()
 export class ExternalLinksService {
-  constructor(@InjectRepository(ExternalLink) private externalLinkRepository: Repository<ExternalLink>) {}
+  constructor(
+    @InjectRepository(ExternalLink) private externalLinkRepository: Repository<ExternalLink>,
+    private searchExternalLinkProvider: SearchExternalLinks,
+    private createExternalLinkProvider: CreateExternalLinks,
+    private updateExternalLinkProvider: UpdateExternalLinks,
+    private deleteExternealLinkProvider: DeleteExternalLinks,
+  ) {}
 
-  findAll(searchExternalLinkDto: SearchExternalLinkDto): Promise<ExternalLink[]> {
-    const { animeId } = searchExternalLinkDto;
-    const searchQuery = this.externalLinkRepository.createQueryBuilder('external_link');
-
-    if (animeId) searchQuery.where(`external_link.animeId = :animeId`, { animeId: animeId });
-
-    return searchQuery.getMany();
+  getExternalLinksOrchestration(searchExternalLinkDto: SearchExternalLinkDto): Promise<ExternalLink[]> {
+    return this.searchExternalLinkProvider.find(searchExternalLinkDto);
   }
 
-  findOne(id: string): Promise<ExternalLink> {
-    return this.externalLinkRepository
-      .createQueryBuilder('external_link')
-      .leftJoinAndSelect('external_link.anime', 'animes')
-      .where('external_link.id = :id', { id: id })
-      .getOne();
+  getExternalLinkOrchestration(id: number): Promise<ExternalLink[]> {
+    return this.searchExternalLinkProvider.find({ id });
   }
 
-  async create(createExternalLinkDto: CreateExternalLinkDto): Promise<object> {
-    const createQuery = await this.externalLinkRepository
-      .createQueryBuilder()
-      .insert()
-      .values(createExternalLinkDto)
-      .execute();
-
-    return { id: createQuery.identifiers[0].id };
+  async postExternalLinkOrchestration(createExternalLinkDto: CreateExternalLinkDto): Promise<object> {
+    return this.createExternalLinkProvider.create(createExternalLinkDto);
   }
 
-  async update(id: string, updateExternalLinkDto: UpdateExternalLinkDto): Promise<object> {
-    await this.externalLinkRepository
-      .createQueryBuilder()
-      .update()
-      .where(`id = :id`, { id: id })
-      .set(updateExternalLinkDto)
-      .execute();
-
-    return { id: id };
+  async putExternalLinkOrchestration(id: number, updateExternalLinkDto: UpdateExternalLinkDto): Promise<object> {
+    return this.updateExternalLinkProvider.update({ id, updateData: updateExternalLinkDto });
   }
 
-  async delete(id: string): Promise<string> {
-    await this.externalLinkRepository
-      .createQueryBuilder()
-      .delete()
-      .where(`id = :id`, { id: id })
-      .execute();
-
-    return 'deleted';
+  async deleteExternalLinkOrchestration(id: string): Promise<string> {
+    return this.deleteExternealLinkProvider.delete(id);
   }
 }

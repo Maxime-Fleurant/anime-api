@@ -1,55 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Character } from './character.entity';
-import { Repository } from 'typeorm';
 import { SearchCharacterDto } from './dto/search-character.dto';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { SearchCharacters } from './providers/search-characters';
+import { CreateCharacters } from './providers/create-characters';
+import { UpdateCharacters } from './providers/update-characters';
+import { DeleteCharacters } from './providers/delete-characters';
 
 @Injectable()
 export class CharactersService {
   constructor(
-    @InjectRepository(Character) private characterRepository: Repository<Character>,
-    private searchCharacter: SearchCharacters,
+    private searchCharacterProvider: SearchCharacters,
+    private createCharacterProvider: CreateCharacters,
+    private updateCharacterProvider: UpdateCharacters,
+    private deleteCharacterProvider: DeleteCharacters,
   ) {}
 
-  getCharacter(searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
-    return this.searchCharacter.find(searchCharacterDto);
+  getCharacters(searchCharacterDto: SearchCharacterDto): Promise<Character[]> {
+    return this.searchCharacterProvider.find(searchCharacterDto);
   }
 
-  getCharacters(id: number): Promise<Character[]> {
-    return this.searchCharacter.find({ id });
+  getCharacter(id: number): Promise<Character[]> {
+    return this.searchCharacterProvider.find({ id });
   }
 
   async create(createCharacterDto: CreateCharacterDto): Promise<object> {
-    const createQuery = await this.characterRepository
-      .createQueryBuilder()
-      .insert()
-      .values(createCharacterDto)
-      .execute();
-
-    return { id: createQuery.identifiers[0].id };
+    return this.createCharacterProvider.create(createCharacterDto);
   }
 
-  async update(id: string, updateCharacterDto: UpdateCharacterDto): Promise<object> {
-    await this.characterRepository
-      .createQueryBuilder()
-      .update()
-      .where(`id = :id`, { id: id })
-      .set(updateCharacterDto)
-      .execute();
-
-    return { id: id };
+  async update(id: number, updateCharacterDto: UpdateCharacterDto): Promise<object> {
+    return this.updateCharacterProvider.update({ id, updateData: updateCharacterDto });
   }
 
   async delete(id: string): Promise<string> {
-    await this.characterRepository
-      .createQueryBuilder()
-      .delete()
-      .where(`id = :id`, { id: id })
-      .execute();
-
-    return 'deleted';
+    return this.deleteCharacterProvider.delete(id);
   }
 }
