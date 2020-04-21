@@ -16,21 +16,21 @@ export class ExternalLinksController {
 
   @Get(':id')
   getExternalLink(@Param('id') id: number): Promise<ExternalLink[]> {
-    return this.externalLinkService.getExternalLinkOrchestration(id);
+    return this.externalLinkService.findOneOrchestration(id);
   }
 
   @Post()
   postExternalLink(@Body() createExternalLinkDto: CreateExternalLinkDto): Promise<object> {
-    return this.externalLinkService.postExternalLinkOrchestration(createExternalLinkDto);
+    return this.externalLinkService.postOrchestration(createExternalLinkDto);
   }
 
   @Put(':id')
   putExternalLink(@Param('id') id: number, @Body() updateExternalLinkDto: UpdateExternalLinkDto): Promise<object> {
-    return this.externalLinkService.putExternalLinkOrchestration(id, updateExternalLinkDto);
+    return this.externalLinkService.putOrchestration(id, updateExternalLinkDto);
   }
 
   @Delete(':id')
-  deleteExternalLink(@Param('id') id: string): Promise<string> {
-    return this.externalLinkService.deleteExternalLinkOrchestration(id);
+  deleteExternalLink(@Param('id') id: number): Promise<string> {
+    return this.externalLinkService.deleteOrchestration(id);
   }
 }

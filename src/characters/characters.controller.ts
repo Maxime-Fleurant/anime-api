@@ -16,21 +16,21 @@ export class CharactersController {
 
   @Get(':id')
   getCharacter(@Param('id') id: number): Promise<Character[]> {
-    return this.characterService.getCharacter(id);
+    return this.characterService.findOneOrchestration(id);
   }
 
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto): Promise<object> {
-    return this.characterService.create(createCharacterDto);
+    return this.characterService.postOrchestration(createCharacterDto);
   }
 
   @Put(':id')
   update(@Param('id') id: number, @Body() updateCharacterDto: UpdateCharacterDto): Promise<object> {
-    return this.characterService.update(id, updateCharacterDto);
+    return this.characterService.putOrchestration(id, updateCharacterDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<string> {
-    return this.characterService.delete(id);
+  delete(@Param('id') id: number): Promise<string> {
+    return this.characterService.deleteOrchestration(id);
   }
 }
