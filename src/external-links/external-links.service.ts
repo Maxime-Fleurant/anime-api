@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ExternalLink } from './external-links.entity';
 import { SearchExternalLinkDto } from './dto/search-external-link.dto';
 import { CreateExternalLinkDto } from './dto/create-external-link.dto';
@@ -13,7 +11,6 @@ import { DeleteExternalLinks } from './providers/delete-external-links';
 @Injectable()
 export class ExternalLinksService {
   constructor(
-    @InjectRepository(ExternalLink) private externalLinkRepository: Repository<ExternalLink>,
     private searchExternalLinkProvider: SearchExternalLinks,
     private createExternalLinkProvider: CreateExternalLinks,
     private updateExternalLinkProvider: UpdateExternalLinks,
