@@ -15,22 +15,22 @@ export class ReviewsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Review> {
-    return this.reviewService.findOne(id);
+  findOne(@Param('id') id: number): Promise<Review[]> {
+    return this.reviewService.findOneOrchestration(id);
   }
 
   @Post()
   create(@Body() createReviewDto: CreateReviewDto): Promise<object> {
-    return this.reviewService.create(createReviewDto);
+    return this.reviewService.postOrchestration(createReviewDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto): Promise<object> {
-    return this.reviewService.update(id, updateReviewDto);
+  update(@Param('id') id: number, @Body() updateReviewDto: UpdateReviewDto): Promise<object> {
+    return this.reviewService.putOrchestration(id, updateReviewDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<string> {
-    return this.reviewService.delete(id);
+  delete(@Param('id') id: number): Promise<string> {
+    return this.reviewService.deleteOrchestration(id);
   }
 }
