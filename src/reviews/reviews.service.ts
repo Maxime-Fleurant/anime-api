@@ -5,6 +5,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { SearchReviews } from './providers/search-reviews';
 import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class ReviewsService extends GenericServiceOrchestratorFactory<Review, CreateReviewDto, UpdateReviewDto>(
@@ -17,4 +18,6 @@ export class ReviewsService extends GenericServiceOrchestratorFactory<Review, Cr
   findAll(searchReviewDto: SearchReviewDto): Promise<Review[]> {
     return this.searchReviewProvider.find(searchReviewDto);
   }
+
+  postReviewOrchestration(createReviewDto: CreateReviewDto, user: User) {}
 }

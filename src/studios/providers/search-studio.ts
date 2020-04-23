@@ -9,11 +9,12 @@ export class SearchStudio {
   constructor(@InjectRepository(Studio) private studioRepository: Repository<Studio>) {}
 
   public find = async (searchCharacterDto: SearchStudioDto): Promise<Studio[]> => {
-    const { name } = searchCharacterDto;
-    const updateQuery = this.studioRepository.createQueryBuilder('studio');
+    const { name, id } = searchCharacterDto;
+    const searchQuery = this.studioRepository.createQueryBuilder('studio');
 
-    if (name) updateQuery.where('studio.name = :name', { name: name });
+    if (name) searchQuery.where('studio.name = :name', { name: name });
+    if (id) searchQuery.andWhere('studio.id = :id', { id: id });
 
-    return updateQuery.getMany();
+    return searchQuery.getMany();
   };
 }

@@ -8,4 +8,8 @@ export class SearchTagDto {
   @IsOptional()
   @IsNumber()
   themeId?: number;
+
+  @IsOptional()
+  @IsNumber()
+  id?: number;
 }
