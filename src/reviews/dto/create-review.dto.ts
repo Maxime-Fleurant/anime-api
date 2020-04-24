@@ -12,4 +12,7 @@ export class CreateReviewDto {
 
   @IsNumber()
   animeId: number;
+
+  @IsNumber()
+  userId: number;
 }

@@ -4,7 +4,6 @@ import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -12,24 +11,27 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: number): Promise<User> {
-    return this.userService.findOne(id);
+    return this.userService.findOneUserOrchestration(id);
   }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<object> {
-    return this.userService.create(createUserDto);
+    return this.userService.postUserOrchestration(createUserDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto, @Req() req: Request): Promise<object> {
-    console.log(req.user);
-    return this.userService.update(id, updateUserDto);
+  update(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() { user }: { user: User },
+  ): Promise<object> {
+    return this.userService.putUserOrchestration(id, updateUserDto, user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<string> {
-    return this.userService.delete(id);
+  delete(@Param('id') id: number, @Req() { user }: { user: User }): Promise<string> {
+    return this.userService.deleteUserOrchestration(id, user);
   }
 }

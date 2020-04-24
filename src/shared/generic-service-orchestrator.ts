@@ -26,20 +26,20 @@ export const GenericServiceOrchestratorFactory: TGenericServiceOrchestratorFacto
     @Inject() private deleteService: GenericDelete<REPO>;
     @Inject() private searchService: GenericSearch<REPO>;
 
-    async postOrchestration(createDto) {
+    findOneOrchestration(id: number): Promise<REPO[]> {
+      return this.searchService.find(this.repository, id);
+    }
+
+    async postOrchestration(createDto): Promise<object> {
       return this.createService.create(this.repository, createDto);
     }
 
-    async putOrchestration(id, updateDto) {
+    async putOrchestration(id, updateDto): Promise<object> {
       return this.updateService.update(this.repository, id, updateDto);
     }
 
-    async deleteOrchestration(id) {
+    async deleteOrchestration(id): Promise<string> {
       return this.deleteService.delete(this.repository, id);
-    }
-
-    findOneOrchestration(id: number): Promise<REPO[]> {
-      return this.searchService.find(this.repository, id);
     }
   }
 

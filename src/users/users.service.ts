@@ -1,22 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Bcrypt } from 'src/shared/bcrypt';
+import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
 
 @Injectable()
-export class UsersService {
-  constructor(private bcrypt: Bcrypt, @InjectRepository(User) private userRepository: Repository<User>) {}
-
-  async findOne(id: number): Promise<User> {
-    const { password, ...user } = await this.userRepository
-      .createQueryBuilder()
-      .where(`id = :id`, { id: id })
-      .getOne();
-
-    return user;
+export class UsersService extends GenericServiceOrchestratorFactory<User, CreateUserDto, UpdateUserDto>(User) {
+  constructor(private bcrypt: Bcrypt, @InjectRepository(User) private userRepository: Repository<User>) {
+    super();
   }
 
   async findCreditential(email: string): Promise<User> {
@@ -26,37 +20,32 @@ export class UsersService {
       .getOne();
   }
 
-  async create(createUserDto: CreateUserDto): Promise<object> {
+  async findOneUserOrchestration(id: number): Promise<User> {
+    const [{ password, ...user }] = await super.findOneOrchestration(id);
+
+    return user;
+  }
+
+  async postUserOrchestration(createUserDto: CreateUserDto): Promise<object> {
     const { password, email } = createUserDto;
     const hashedPassword = await this.bcrypt.hash(password, 10);
 
-    const createQuery = await this.userRepository
-      .createQueryBuilder()
-      .insert()
-      .values({ password: hashedPassword, email })
-      .execute();
-
-    return { id: createQuery.identifiers[0].id };
+    return super.postOrchestration({ password: hashedPassword, email });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<object> {
-    await this.userRepository
-      .createQueryBuilder()
-      .update()
-      .set(updateUserDto)
-      .where(`id = :id`, { id: id })
-      .execute();
+  async putUserOrchestration(id: number, updateUserDto: UpdateUserDto, user: User): Promise<object> {
+    const userToUpdate = await super.findOneOrchestration(id);
 
-    return { id: id };
+    if (!userToUpdate.length || userToUpdate[0].id != user.id) throw new ForbiddenException();
+
+    return super.putOrchestration(id, updateUserDto);
   }
 
-  async delete(id: number): Promise<string> {
-    await this.userRepository
-      .createQueryBuilder()
-      .delete()
-      .where(`id = :id`, { id: id })
-      .execute();
+  async deleteUserOrchestration(id: number, user: User): Promise<string> {
+    const userToUpdate = await super.findOneOrchestration(id);
 
-    return 'deleted';
+    if (!userToUpdate.length || userToUpdate[0].id != user.id) throw new ForbiddenException();
+
+    return super.deleteOrchestration(id);
   }
 }

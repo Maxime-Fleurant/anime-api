@@ -5,7 +5,7 @@ import { SearchReviewDto } from './dto/search-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { User } from 'src/users/users.entity';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -23,19 +23,23 @@ export class ReviewsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto, @Req req: Request): Promise<object> {
-    return this.reviewService.postReviewOrchestration(createReviewDto, req.user);
+  create(@Body() createReviewDto: CreateReviewDto, @Req() { user }: { user: User }): Promise<object> {
+    return this.reviewService.postReviewOrchestration(createReviewDto, user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateReviewDto: UpdateReviewDto): Promise<object> {
-    return this.reviewService.putOrchestration(id, updateReviewDto);
+  update(
+    @Param('id') id: number,
+    @Body() updateReviewDto: UpdateReviewDto,
+    @Req() { user }: { user: User },
+  ): Promise<object> {
+    return this.reviewService.putReviewOrchestration(id, updateReviewDto, user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<string> {
-    return this.reviewService.deleteOrchestration(id);
+  delete(@Param('id') id: number, @Req() { user }: { user: User }): Promise<string> {
+    return this.reviewService.deleteReviewOrchestration(id, user);
   }
 }

@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Anime } from 'src/animes/animes.entity';
+import { User } from 'src/users/users.entity';
 
 @Entity()
 export class Review {
@@ -17,6 +18,16 @@ export class Review {
 
   @Column('bigint', { nullable: false })
   animeId: number;
+
+  @Column('bigint', { nullable: false })
+  userId: number;
+
+  @ManyToOne(
+    () => User,
+    user => user.reviews,
+  )
+  @JoinColumn({ name: 'userId' })
+  users: User[];
 
   @ManyToOne(
     () => Anime,
