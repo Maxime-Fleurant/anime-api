@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Tag } from 'src/tags/tags.entity';
+import { Tag } from '../tags/tags.entity';
 
 @Entity()
 export class Theme {

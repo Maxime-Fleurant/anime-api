@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Anime } from 'src/animes/animes.entity';
+import { Anime } from '../animes/animes.entity';
 
 @Entity()
 export class ExternalLink {

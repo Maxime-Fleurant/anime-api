@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany } from 'typeorm';
-import { Theme } from 'src/themes/themes.entity';
-import { Anime } from 'src/animes/animes.entity';
+import { Theme } from '../themes/themes.entity';
+import { Anime } from '../animes/animes.entity';
 
 @Entity()
 export class Tag {

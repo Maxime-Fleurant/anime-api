@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Anime } from 'src/animes/animes.entity';
-import { User } from 'src/users/users.entity';
+import { Anime } from '../animes/animes.entity';
+import { User } from '../users/users.entity';
 
 @Entity()
 export class Review {

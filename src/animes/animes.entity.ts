@@ -8,12 +8,12 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Studio } from 'src/studios/studios.entity';
-import { Tag } from 'src/tags/tags.entity';
-import { Genre } from 'src/genres/genres.entity';
-import { Review } from 'src/reviews/reviews.entity';
-import { Character } from 'src/characters/character.entity';
-import { ExternalLink } from 'src/external-links/external-links.entity';
+import { Studio } from '../studios/studios.entity';
+import { Tag } from '../tags/tags.entity';
+import { Genre } from '../genres/genres.entity';
+import { Review } from '../reviews/reviews.entity';
+import { Character } from '../characters/character.entity';
+import { ExternalLink } from '../external-links/external-links.entity';
 
 @Entity()
 export class Anime {
