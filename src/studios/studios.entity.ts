@@ -13,5 +13,5 @@ export class Studio {
     () => Anime,
     anime => anime.studio,
   )
-  animes: Anime[];
+  animes?: Anime[];
 }
