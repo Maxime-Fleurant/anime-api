@@ -4,8 +4,8 @@ import { SearchReviewDto } from './dto/search-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { SearchReviews } from './providers/search-reviews';
-import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
-import { User } from 'src/users/users.entity';
+import { User } from '../users/users.entity';
+import { GenericServiceOrchestratorFactory } from '../shared/generic-service-orchestrator';
 
 @Injectable()
 export class ReviewsService extends GenericServiceOrchestratorFactory<Review, CreateReviewDto, UpdateReviewDto>(

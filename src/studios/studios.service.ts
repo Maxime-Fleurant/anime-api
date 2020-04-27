@@ -4,7 +4,7 @@ import { CreateStudioDto } from './dto/create-studio.dto';
 import { SearchStudioDto } from './dto/search-studio.dto';
 import { UpdateStudioDto } from './dto/update-studio.dto';
 import { SearchStudio } from './providers/search-studio';
-import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
+import { GenericServiceOrchestratorFactory } from '../shared/generic-service-orchestrator';
 
 @Injectable()
 export class StudiosService extends GenericServiceOrchestratorFactory<Studio, CreateStudioDto, UpdateStudioDto>(

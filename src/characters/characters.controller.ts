@@ -5,7 +5,7 @@ import { SearchCharacterDto } from './dto/search-character.dto';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/auth/admin.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('characters')
 export class CharactersController {

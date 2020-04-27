@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from './tags.entity';
 import { Repository } from 'typeorm';
 import { SearchTagDto } from './dto/search-tags.dto';
-import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { GenericServiceOrchestratorFactory } from '../shared/generic-service-orchestrator';
 
 @Injectable()
 export class TagsService extends GenericServiceOrchestratorFactory<Tag, CreateTagDto, UpdateTagDto>(Tag) {

@@ -4,8 +4,8 @@ import { ExternalLink } from './external-links.entity';
 import { SearchExternalLinkDto } from './dto/search-external-link.dto';
 import { CreateExternalLinkDto } from './dto/create-external-link.dto';
 import { UpdateExternalLinkDto } from './dto/update-external-link.dto';
-import { AdminGuard } from 'src/auth/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('external-links')
 export class ExternalLinksController {

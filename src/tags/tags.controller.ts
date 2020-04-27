@@ -4,8 +4,8 @@ import { Tag } from './tags.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { SearchTagDto } from './dto/search-tags.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { AdminGuard } from 'src/auth/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('tags')
 export class TagsController {

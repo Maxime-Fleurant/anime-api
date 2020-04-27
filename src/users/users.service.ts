@@ -4,8 +4,8 @@ import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Bcrypt } from 'src/shared/bcrypt';
-import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
+import { GenericServiceOrchestratorFactory } from '../shared/generic-service-orchestrator';
+import { Bcrypt } from '../shared/bcrypt';
 
 @Injectable()
 export class UsersService extends GenericServiceOrchestratorFactory<User, CreateUserDto, UpdateUserDto>(User) {

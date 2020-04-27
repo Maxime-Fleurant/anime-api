@@ -4,8 +4,8 @@ import { Studio } from './studios.entity';
 import { CreateStudioDto } from './dto/create-studio.dto';
 import { SearchStudioDto } from './dto/search-studio.dto';
 import { UpdateStudioDto } from './dto/update-studio.dto';
-import { AdminGuard } from 'src/auth/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('studios')
 export class StudiosController {

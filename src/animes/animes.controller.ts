@@ -5,7 +5,7 @@ import { CreateAnimeDto } from './dto/create-anime.dto';
 import { UpdateAnimeDto } from './dto/update-anime.dto';
 import { SearchAnimeDto } from './dto/search-anime.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/auth/admin.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('animes')
 export class AnimesController {

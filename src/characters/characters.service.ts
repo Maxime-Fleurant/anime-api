@@ -4,7 +4,7 @@ import { SearchCharacterDto } from './dto/search-character.dto';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { SearchCharacters } from './providers/search-characters';
-import { GenericServiceOrchestratorFactory } from 'src/shared/generic-service-orchestrator';
+import { GenericServiceOrchestratorFactory } from '../shared/generic-service-orchestrator';
 
 @Injectable()
 export class CharactersService extends GenericServiceOrchestratorFactory<
