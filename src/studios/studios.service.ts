@@ -14,7 +14,7 @@ export class StudiosService extends GenericServiceOrchestratorFactory<Studio, Cr
     super();
   }
 
-  findManyStudioOrchestration(searchstudiodto: SearchStudioDto): Promise<Studio[]> {
+  async findManyStudioOrchestration(searchstudiodto: SearchStudioDto): Promise<Studio[]> {
     return this.searchStudioService.find(searchstudiodto);
   }
 }

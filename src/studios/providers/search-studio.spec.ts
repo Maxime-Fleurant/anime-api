@@ -3,21 +3,13 @@ import { SearchStudio } from './search-studio';
 import { Studio } from '../studios.entity';
 import { SelectQueryBuilder } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
-
-class TestRepo {
-  createQueryBuilder: () => SelectQueryBuilder<Studio>;
-}
-
-const createStudio = (id: number, name: string): Studio => {
-  const newStudio = new Studio();
-
-  newStudio.id = id;
-  newStudio.name = name;
-
-  return newStudio;
-};
+import { createStudio } from '../../shared/test-utils/create-test-studios';
 
 describe('SearchStudio', () => {
+  class TestRepo {
+    createQueryBuilder: () => SelectQueryBuilder<Studio>;
+  }
+
   let searchStudio: SearchStudio;
   let selectQueryBuilder: SelectQueryBuilder<Studio>;
   let testRepo: TestRepo;
@@ -42,7 +34,7 @@ describe('SearchStudio', () => {
     expect(searchStudio).toBeDefined();
   });
 
-  describe('SearchStudio Find Method Test', () => {
+  describe('SearchStudio find Method Test', () => {
     it('When called with DTO: {} -> return Studio[]', async () => {
       const studioArray = [createStudio(1, 'fdlkfdl'), createStudio(2, 'lfdkl')];
       jest.spyOn(selectQueryBuilder, 'getMany').mockResolvedValue(studioArray);
