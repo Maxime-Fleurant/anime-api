@@ -36,7 +36,7 @@ describe('SearchStudio', () => {
 
   describe('SearchStudio find Method Test', () => {
     it('When called with DTO: {} -> return Studio[]', async () => {
-      const studioArray = [createStudio(1, 'fdlkfdl'), createStudio(2, 'lfdkl')];
+      const studioArray = [createStudio(1, 'testname'), createStudio(2, 'lfdkl')];
       jest.spyOn(selectQueryBuilder, 'getMany').mockResolvedValue(studioArray);
 
       expect(searchStudio.find({})).resolves.toMatchObject(studioArray);

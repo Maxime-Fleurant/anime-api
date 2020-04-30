@@ -19,6 +19,7 @@ import { Review } from './reviews/reviews.entity';
 import { Character } from './characters/character.entity';
 import { ExternalLink } from './external-links/external-links.entity';
 import { User } from './users/users.entity';
+import { FakeModuleModule } from './fake-module/fake-module.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { User } from './users/users.entity';
     AuthModule,
     UsersModule,
     SharedModule,
+    FakeModuleModule,
   ],
   providers: [],
 })

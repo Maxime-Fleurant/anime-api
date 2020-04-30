@@ -53,7 +53,9 @@ describe('StudioController', () => {
       const studioArray = [createStudio(1, 'fdlkfdl'), createStudio(2, 'lfdkl')];
       jest.spyOn(studioService, 'findManyStudioOrchestration').mockResolvedValue(studioArray);
 
-      expect(studiosController.getStudiosController({})).resolves.toMatchObject(studioArray);
+      const testCall = studiosController.getStudiosController({});
+
+      expect(testCall).resolves.toMatchObject(studioArray);
     });
 
     it('Call Signature : (SearchStudioDto: {name:string}) : Promise<Studio[]>', async () => {
@@ -88,10 +90,16 @@ describe('StudioController', () => {
   });
 
   describe('StudioController.postStudioControler method test', () => {
-    it('Call Signature : (CreateStudioDto: {name:value}) : Promise<{id: number}>', async () => {
+    it('When called with non existing name should return  Promise<{id: number}>', async () => {
       jest.spyOn(studioService, 'postOrchestration').mockResolvedValue({ id: 1 });
 
       expect(studiosController.postStudioControler({ name: 'fldk' })).resolves.toMatchObject({ id: 1 });
+    });
+
+    it('When called with  existing name trow QueryFailedError', async () => {
+      jest.spyOn(studioService, 'postOrchestration').mockRejectedValue(new QueryFailedError('fldk', ['dsml'], 'fdlk'));
+
+      expect(studiosController.postStudioControler({ name: 'fldk' })).rejects.toThrow(QueryFailedError);
     });
   });
 
